@@ -1,0 +1,185 @@
+{
+  "info": {
+    "_postman_id": "278eafd4-2b97-4593-bfed-f05a87317e71",
+    "name": "Sistema de Gestion de Eventos Universitarios - APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58160662",
+    "_collection_link": "https://go.postman.co/collection/58160662-278eafd4-2b97-4593-bfed-f05a87317e71?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Microservicio 1 - Eventos",
+      "item": [
+        {
+          "name": "GET - Listar Eventos (con Query Params)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://microservicio-eventos.onrender.com/api/eventos?categoria=Tecnologia",
+              "protocol": "https",
+              "host": [
+                "microservicio-eventos",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "eventos"
+              ],
+              "query": [
+                {
+                  "key": "categoria",
+                  "value": "Tecnologia"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Evento por ID (Path Params)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://microservicio-eventos.onrender.com/api/eventos/1",
+              "protocol": "https",
+              "host": [
+                "microservicio-eventos",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "eventos",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST - Crear Evento (Body Params)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Foro de Ciberseguridad\",\n  \"categoria\": \"Tecnologia\",\n  \"fecha\": \"2026-12-01\",\n  \"lugar\": \"Auditorio C\"\n}"
+            },
+            "url": {
+              "raw": "https://microservicio-eventos.onrender.com/api/eventos",
+              "protocol": "https",
+              "host": [
+                "microservicio-eventos",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "eventos"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Microservicio 2 - Inscripciones",
+      "item": [
+        {
+          "name": "POST - Inscribir Participante (Body Params)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventoId\": 1,\n  \"participante\": \"Laura Torres\",\n  \"email\": \"laura@univ.edu\",\n  \"carrera\": \"Sistemas\"\n}"
+            },
+            "url": {
+              "raw": "https://microservicio-inscripciones.onrender.com/api/inscripciones",
+              "protocol": "https",
+              "host": [
+                "microservicio-inscripciones",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "inscripciones"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Participantes por Evento (Path Params)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://microservicio-inscripciones.onrender.com/api/inscripciones/evento/1",
+              "protocol": "https",
+              "host": [
+                "microservicio-inscripciones",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "inscripciones",
+                "evento",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Microservicio 3 - Reportes",
+      "item": [
+        {
+          "name": "GET - Reporte Filtrado (Query Params)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://microservicio-reportes-rztd.onrender.com/api/reportes?categoria=Tecnologia",
+              "protocol": "https",
+              "host": [
+                "microservicio-reportes-rztd",
+                "onrender",
+                "com"
+              ],
+              "path": [
+                "api",
+                "reportes"
+              ],
+              "query": [
+                {
+                  "key": "categoria",
+                  "value": "Tecnologia"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
