@@ -74,29 +74,39 @@
     </table>
   </div>
 
-  <script>
-    // Ajusta las URL base al desplegar en Render o Railway
-    const API_EVENTOS = 'https://microservicio-eventos.onrender.com';
-    const API_INSCRIPCIONES = 'https://microservicio-inscripciones.onrender.com';
-    const API_REPORTES = 'https://microservicio-reportes-rztd.onrender.com';
+ <script>
+  // URLs base de los microservicios en Render
+  const API_EVENTOS = 'https://microservicio-eventos.onrender.com/api/eventos';
+  const API_INSCRIPCIONES = 'https://microservicio-inscripciones.onrender.com/api/inscripciones';
+  const API_REPORTES = 'https://microservicio-reportes-rztd.onrender.com/api/reportes';
 
-    async function crearEvento() {
-      const data = {
-        titulo: document.getElementById('evTitulo').value,
-        categoria: document.getElementById('evCategoria').value,
-        fecha: document.getElementById('evFecha').value,
-        lugar: document.getElementById('evLugar').value
-      };
+  // 1. Crear Evento
+  async function crearEvento() {
+    const data = {
+      titulo: document.getElementById('evTitulo').value,
+      categoria: document.getElementById('evCategoria').value,
+      fecha: document.getElementById('evFecha').value,
+      lugar: document.getElementById('evLugar').value
+    };
+    try {
       const res = await fetch(API_EVENTOS, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
-      if (res.ok) alert('Evento creado con éxito');
-      else alert('Error al crear evento');
+      if (res.ok) {
+        alert('Evento creado con éxito');
+      } else {
+        alert('Error al crear evento');
+      }
+    } catch (e) {
+      alert('Error de conexión con Microservicio Eventos');
     }
+  }
 
-    async function obtenerEventos() {
+  // 2. Listar Eventos
+  async function obtenerEventos() {
+    try {
       const res = await fetch(API_EVENTOS);
       const data = await res.json();
       const ul = document.getElementById('listaEventos');
@@ -104,46 +114,78 @@
       data.forEach(e => {
         ul.innerHTML += `<li><strong>ID ${e.id}:</strong> ${e.titulo} (${e.categoria}) - ${e.fecha} en ${e.lugar}</li>`;
       });
+    } catch (e) {
+      alert('Error al obtener eventos');
     }
+  }
 
-    async function inscribir() {
-      const data = {
-        eventoId: document.getElementById('insEventoId').value,
-        participante: document.getElementById('insNombre').value,
-        email: document.getElementById('insEmail').value,
-        carrera: document.getElementById('insCarrera').value
-      };
+  // 3. Inscribir Participante (Corregido: campo 'email' alineado con el backend)
+  async function inscribir() {
+    const data = {
+      eventoId: document.getElementById('insEventoId').value,
+      participante: document.getElementById('insNombre').value,
+      email: document.getElementById('insCorreo').value, // <--- Nombre correcto que espera server2.js
+      carrera: document.getElementById('insCarrera').value
+    };
+    try {
       const res = await fetch(API_INSCRIPCIONES, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
-      if (res.ok) alert('Inscripción realizada');
-      else alert('Error en la inscripción');
+      if (res.ok) {
+        alert('Inscripción realizada con éxito');
+      } else {
+        alert('Error en la inscripción');
+      }
+    } catch (e) {
+      alert('Error de conexión con Microservicio Inscripciones');
     }
+  }
 
-    async function consultarParticipantes() {
-      const id = document.getElementById('consultaEventoId').value;
-      const res = await fetch(`${API_INSCRIPCIONES}/evento/${id}`);
+  // 4. Consultar Participantes por Evento
+  async function consultarParticipantes() {
+    const eventoId = document.getElementById('conEventoId').value;
+    if (!eventoId) return alert('Ingresa un ID de evento');
+    try {
+      const res = await fetch(`${API_INSCRIPCIONES}/evento/${eventoId}`);
       const data = await res.json();
       const ul = document.getElementById('listaParticipantes');
       ul.innerHTML = '';
-      data.forEach(p => {
-        ul.innerHTML += `<li>${p.participante} - ${p.email} (${p.carrera})</li>`;
-      });
+      if (Array.isArray(data) && data.length > 0) {
+        data.forEach(p => {
+          ul.innerHTML += `<li>${p.participante} - ${p.email} (${p.carrera})</li>`;
+        });
+      } else {
+        ul.innerHTML = '<li>No hay inscritos para este evento.</li>';
+      }
+    } catch (e) {
+      alert('Error al consultar participantes');
     }
+  }
 
-    async function generarReporte() {
-      const cat = document.getElementById('repCategoria').value;
-      const url = cat ? `${API_REPORTES}?categoria=${cat}` : API_REPORTES;
+  // 5. Reportes Filtrados
+  async function obtenerReportes() {
+    const cat = document.getElementById('repCategoria').value;
+    let url = API_REPORTES;
+    if (cat) url += `?categoria=${encodeURIComponent(cat)}`;
+    try {
       const res = await fetch(url);
-      const reportData = await res.json();
+      const data = await res.json();
       const tbody = document.querySelector('#tablaReportes tbody');
       tbody.innerHTML = '';
-      reportData.datos.forEach(r => {
-        tbody.innerHTML += `<tr><td>${r.evento}</td><td>${r.categoria}</td><td>${r.totalInscritos}</td><td>${r.estado}</td></tr>`;
+      data.forEach(r => {
+        tbody.innerHTML += `<tr>
+          <td>${r.evento}</td>
+          <td>${r.categoria}</td>
+          <td>${r.inscritos}</td>
+          <td>${r.estado}</td>
+        </tr>`;
       });
+    } catch (e) {
+      alert('Error al obtener reportes');
     }
-  </script>
+  }
+</script>
 </body>
 </html>
