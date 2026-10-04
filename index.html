@@ -1,191 +1,190 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestión de Eventos Universitarios</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f6f9; }
-    h1 { color: #1e3a8a; }
-    .card { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    input, select, button { padding: 8px; margin: 5px 0; width: 100%; max-width: 300px; display: block; }
-    button { background-color: #2563eb; color: white; border: none; border-radius: 4px; cursor: pointer; }
-    button:hover { background-color: #1d4ed8; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-    th { background-color: #e2e8f0; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Eventos Universitarios</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f9; color: #333; }
+        h1 { color: #1a2a3a; }
+        .section { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        input, button, select { display: block; margin: 10px 0; padding: 10px; width: 100%; max-width: 400px; box-sizing: border-box; }
+        button { background-color: #003366; color: white; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        button:hover { background-color: #002244; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #003366; color: white; }
+    </style>
 </head>
 <body>
 
-  <h1>Sistema de Gestión de Eventos Universitarios</h1>
+    <h1>Sistema de Gestión de Eventos Universitarios</h1>
 
-  <!-- 1. Crear Evento -->
-  <div class="card">
-    <h2>1. Crear Evento</h2>
-    <input type="text" id="evTitulo" placeholder="Título del Evento">
-    <input type="text" id="evCategoria" placeholder="Categoría (ej. Tecnologia)">
-    <input type="date" id="evFecha">
-    <input type="text" id="evLugar" placeholder="Lugar">
-    <button onclick="crearEvento()">Guardar Evento</button>
-  </div>
+    <!-- 1. Crear Evento -->
+    <div class="section">
+        <h2>1. Crear Evento</h2>
+        <input type="text" id="evTitulo" placeholder="Título del Evento">
+        <input type="text" id="evCategoria" placeholder="Categoría (ej: Tecnologia, Deportes)">
+        <input type="date" id="evFecha">
+        <input type="text" id="evLugar" placeholder="Lugar">
+        <button onclick="crearEvento()">Guardar Evento</button>
+    </div>
 
-  <!-- 2. Listar Eventos -->
-  <div class="card">
-    <h2>2. Listar Eventos</h2>
-    <button onclick="obtenerEventos()">Cargar Eventos</button>
-    <ul id="listaEventos"></ul>
-  </div>
+    <!-- 2. Listar Eventos -->
+    <div class="section">
+        <h2>2. Listar Eventos</h2>
+        <button onclick="obtenerEventos()">Cargar Eventos</button>
+        <ul id="listaEventos"></ul>
+    </div>
 
-  <!-- 3. Inscribir Participante -->
-  <div class="card">
-    <h2>3. Inscribir Participante</h2>
-    <input type="number" id="insEventoId" placeholder="ID del Evento">
-    <input type="text" id="insNombre" placeholder="Nombre Participante">
-    <input type="email" id="insEmail" placeholder="Correo Electrónico">
-    <input type="text" id="insCarrera" placeholder="Carrera / Facultad">
-    <button onclick="inscribir()">Registrar Inscripción</button>
-  </div>
+    <!-- 3. Inscribir Participante -->
+    <div class="section">
+        <h2>3. Inscribir Participante</h2>
+        <input type="number" id="insEventoId" placeholder="ID del Evento">
+        <input type="text" id="insNombre" placeholder="Nombre Participante">
+        <input type="email" id="insCorreo" placeholder="Correo Electrónico">
+        <input type="text" id="insCarrera" placeholder="Carrera / Facultad">
+        <button onclick="inscribir()">Registrar Inscripción</button>
+    </div>
 
-  <!-- 4. Consultar Participantes por Evento -->
-  <div class="card">
-    <h2>4. Consultar Participantes por Evento</h2>
-    <input type="number" id="consultaEventoId" placeholder="ID del Evento">
-    <button onclick="consultarParticipantes()">Buscar Participantes</button>
-    <ul id="listaParticipantes"></ul>
-  </div>
+    <!-- 4. Consultar Participantes -->
+    <div class="section">
+        <h2>4. Consultar Participantes por Evento</h2>
+        <input type="number" id="conEventoId" placeholder="ID del Evento">
+        <button onclick="consultarParticipantes()">Buscar Participantes</button>
+        <ul id="listaParticipantes"></ul>
+    </div>
 
-  <!-- 5. Visualizar Reportes Filtrados -->
-  <div class="card">
-    <h2>5. Reportes Filtrados</h2>
-    <input type="text" id="repCategoria" placeholder="Filtrar por Categoría">
-    <button onclick="generarReporte()">Obtener Reporte</button>
+    <!-- 5. Reportes Filtrados -->
+    <div class="section">
+        <h2>5. Reportes Filtrados</h2>
+        <input type="text" id="repCategoria" placeholder="Filtrar por Categoría">
+        <button onclick="obtenerReportes()">Obtener Reporte</button>
+        <table id="tablaReportes">
+            <thead>
+                <tr>
+                    <th>Evento</th>
+                    <th>Categoría</th>
+                    <th>Inscritos</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 
-    <table id="tablaReportes">
-      <thead>
-        <tr>
-          <th>Evento</th>
-          <th>Categoría</th>
-          <th>Inscritos</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+    <script>
+        // URLs públicas de Render
+        const API_EVENTOS = 'https://microservicio-eventos.onrender.com/api/eventos';
+        const API_INSCRIPCIONES = 'https://microservicio-inscripciones.onrender.com/api/inscripciones';
+        const API_REPORTES = 'https://microservicio-reportes-rztd.onrender.com/api/reportes';
 
- <script>
-  // URLs base de los microservicios en Render
-  const API_EVENTOS = 'https://microservicio-eventos.onrender.com/api/eventos';
-  const API_INSCRIPCIONES = 'https://microservicio-inscripciones.onrender.com/api/inscripciones';
-  const API_REPORTES = 'https://microservicio-reportes-rztd.onrender.com/api/reportes';
+        // 1. Crear Evento
+        async function crearEvento() {
+            const data = {
+                titulo: document.getElementById('evTitulo').value,
+                categoria: document.getElementById('evCategoria').value,
+                fecha: document.getElementById('evFecha').value,
+                lugar: document.getElementById('evLugar').value
+            };
+            try {
+                const res = await fetch(API_EVENTOS, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (res.ok) {
+                    alert('Evento creado con éxito');
+                } else {
+                    alert('Error al crear evento');
+                }
+            } catch (e) {
+                alert('Error de conexión con Microservicio Eventos');
+            }
+        }
 
-  // 1. Crear Evento
-  async function crearEvento() {
-    const data = {
-      titulo: document.getElementById('evTitulo').value,
-      categoria: document.getElementById('evCategoria').value,
-      fecha: document.getElementById('evFecha').value,
-      lugar: document.getElementById('evLugar').value
-    };
-    try {
-      const res = await fetch(API_EVENTOS, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-      if (res.ok) {
-        alert('Evento creado con éxito');
-      } else {
-        alert('Error al crear evento');
-      }
-    } catch (e) {
-      alert('Error de conexión con Microservicio Eventos');
-    }
-  }
+        // 2. Listar Eventos
+        async function obtenerEventos() {
+            try {
+                const res = await fetch(API_EVENTOS);
+                const data = await res.json();
+                const ul = document.getElementById('listaEventos');
+                ul.innerHTML = '';
+                data.forEach(e => {
+                    ul.innerHTML += `<li><strong>ID ${e.id}:</strong> ${e.titulo} (${e.categoria}) - ${e.fecha} en ${e.lugar}</li>`;
+                });
+            } catch (e) {
+                alert('Error al obtener eventos');
+            }
+        }
 
-  // 2. Listar Eventos
-  async function obtenerEventos() {
-    try {
-      const res = await fetch(API_EVENTOS);
-      const data = await res.json();
-      const ul = document.getElementById('listaEventos');
-      ul.innerHTML = '';
-      data.forEach(e => {
-        ul.innerHTML += `<li><strong>ID ${e.id}:</strong> ${e.titulo} (${e.categoria}) - ${e.fecha} en ${e.lugar}</li>`;
-      });
-    } catch (e) {
-      alert('Error al obtener eventos');
-    }
-  }
+        // 3. Inscribir Participante
+        async function inscribir() {
+            const data = {
+                eventoId: document.getElementById('insEventoId').value,
+                participante: document.getElementById('insNombre').value,
+                email: document.getElementById('insCorreo').value,
+                carrera: document.getElementById('insCarrera').value
+            };
+            try {
+                const res = await fetch(API_INSCRIPCIONES, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (res.ok) {
+                    alert('Inscripción realizada con éxito');
+                } else {
+                    alert('Error en la inscripción');
+                }
+            } catch (e) {
+                alert('Error de conexión con Microservicio Inscripciones');
+            }
+        }
 
-  // 3. Inscribir Participante (Corregido: campo 'email' alineado con el backend)
-  async function inscribir() {
-    const data = {
-      eventoId: document.getElementById('insEventoId').value,
-      participante: document.getElementById('insNombre').value,
-      email: document.getElementById('insCorreo').value, // <--- Nombre correcto que espera server2.js
-      carrera: document.getElementById('insCarrera').value
-    };
-    try {
-      const res = await fetch(API_INSCRIPCIONES, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-      if (res.ok) {
-        alert('Inscripción realizada con éxito');
-      } else {
-        alert('Error en la inscripción');
-      }
-    } catch (e) {
-      alert('Error de conexión con Microservicio Inscripciones');
-    }
-  }
+        // 4. Consultar Participantes por Evento
+        async function consultarParticipantes() {
+            const eventoId = document.getElementById('conEventoId').value;
+            if (!eventoId) return alert('Ingresa un ID de evento');
+            try {
+                const res = await fetch(`${API_INSCRIPCIONES}/evento/${eventoId}`);
+                const data = await res.json();
+                const ul = document.getElementById('listaParticipantes');
+                ul.innerHTML = '';
+                if (Array.isArray(data) && data.length > 0) {
+                    data.forEach(p => {
+                        ul.innerHTML += `<li>${p.participante} - ${p.email} (${p.carrera})</li>`;
+                    });
+                } else {
+                    ul.innerHTML = '<li>No hay inscritos para este evento.</li>';
+                }
+            } catch (e) {
+                alert('Error al consultar participantes');
+            }
+        }
 
-  // 4. Consultar Participantes por Evento
-  async function consultarParticipantes() {
-    const eventoId = document.getElementById('conEventoId').value;
-    if (!eventoId) return alert('Ingresa un ID de evento');
-    try {
-      const res = await fetch(`${API_INSCRIPCIONES}/evento/${eventoId}`);
-      const data = await res.json();
-      const ul = document.getElementById('listaParticipantes');
-      ul.innerHTML = '';
-      if (Array.isArray(data) && data.length > 0) {
-        data.forEach(p => {
-          ul.innerHTML += `<li>${p.participante} - ${p.email} (${p.carrera})</li>`;
-        });
-      } else {
-        ul.innerHTML = '<li>No hay inscritos para este evento.</li>';
-      }
-    } catch (e) {
-      alert('Error al consultar participantes');
-    }
-  }
-
-  // 5. Reportes Filtrados
-  async function obtenerReportes() {
-    const cat = document.getElementById('repCategoria').value;
-    let url = API_REPORTES;
-    if (cat) url += `?categoria=${encodeURIComponent(cat)}`;
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      const tbody = document.querySelector('#tablaReportes tbody');
-      tbody.innerHTML = '';
-      data.forEach(r => {
-        tbody.innerHTML += `<tr>
-          <td>${r.evento}</td>
-          <td>${r.categoria}</td>
-          <td>${r.inscritos}</td>
-          <td>${r.estado}</td>
-        </tr>`;
-      });
-    } catch (e) {
-      alert('Error al obtener reportes');
-    }
-  }
-</script>
+        // 5. Reportes Filtrados
+        async function obtenerReportes() {
+            const cat = document.getElementById('repCategoria').value;
+            let url = API_REPORTES;
+            if (cat) url += `?categoria=${encodeURIComponent(cat)}`;
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                const tbody = document.querySelector('#tablaReportes tbody');
+                tbody.innerHTML = '';
+                data.forEach(r => {
+                    tbody.innerHTML += `<tr>
+                        <td>${r.evento}</td>
+                        <td>${r.categoria}</td>
+                        <td>${r.inscritos}</td>
+                        <td>${r.estado}</td>
+                    </tr>`;
+                });
+            } catch (e) {
+                alert('Error al obtener reportes');
+            }
+        }
+    </script>
 </body>
 </html>
